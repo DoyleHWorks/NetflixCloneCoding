@@ -83,4 +83,23 @@ class MainViewModel {
                 }
             ).disposed(by: disposeBag)
     }
+    
+    func fetchTrailerKey(movie: Movie) -> Single<String> {
+        guard let movieId = movie.id else { return Single.error(NetworkError.dataFetchFail)}
+        let urlString = "https://api.themoviedb.org/3/movie/\(movieId)/videos?api_key=\(apiKey)"
+        guard let url = URL(string: urlString) else {
+            return Single.error(NetworkError.invalidUrl)
+        }
+        
+        return NetworkManager.shared.fetch(url: url)
+            .flatMap { (videoResponse: VideoResponse) -> Single<String> in
+                if let trailer = videoResponse.results.first(where: { $0.type == "Trailer" && $0.site == "YouTube" }) {
+                    let key = trailer.key
+                    return Single.just(key)
+                } else {
+                    return Single.error(NetworkError.dataFetchFail)
+                }
+            }
+        
+    }
 }

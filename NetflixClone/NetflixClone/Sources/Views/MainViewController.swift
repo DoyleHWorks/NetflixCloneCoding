@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 import RxSwift
 import AVKit
-import YouTubeiOSPlayerHelper
 
 class MainViewController: UIViewController {
     // MARK: - Properties
@@ -135,6 +134,16 @@ class MainViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
+    
+    private func playVideoUrl() {
+        let url = URL(string: "https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4")!
+        let player = AVPlayer(url: url)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        present(playerViewController, animated: true) {
+            player.play()
+        }
+    }
 }
 
 enum Section: Int, CaseIterable {
@@ -199,9 +208,46 @@ extension MainViewController: UICollectionViewDataSource {
         headerView.configure(with: sectionType.title)
         return headerView
     }
-    
 }
 
 extension MainViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch Section(rawValue: indexPath.section) {
+        case .popularMovies:
+            viewModel.fetchTrailerKey(movie: popularMovies[indexPath.row])
+                .observe(on: MainScheduler.instance)
+                .subscribe(
+                    onSuccess: { [weak self] key in
+                        self?.navigationController?.pushViewController(YoutubeViewController(key: key), animated: true)
+                    }, onFailure: { error in
+                        print("Error: \(error)")
+                    }
+                ).disposed(by: disposeBag)
+            
+        case .topRatedMovies:
+            viewModel.fetchTrailerKey(movie: topRatedMovies[indexPath.row])
+                .observe(on: MainScheduler.instance)
+                .subscribe(
+                    onSuccess: { [weak self] key in
+                        self?.navigationController?.pushViewController(YoutubeViewController(key: key), animated: true)
+                    }, onFailure: { error in
+                        print("Error: \(error)")
+                    }
+                ).disposed(by: disposeBag)
+            
+        case .upcomingMovies:
+            viewModel.fetchTrailerKey(movie: upcomingMovies[indexPath.row])
+                .observe(on: MainScheduler.instance)
+                .subscribe(
+                    onSuccess: { [weak self] key in
+                        self?.navigationController?.pushViewController(YoutubeViewController(key: key), animated: true)
+                    }, onFailure: { error in
+                        print("Error: \(error)")
+                    }
+                ).disposed(by: disposeBag)
+            
+        default:
+            return
+        }
+    }
 }
