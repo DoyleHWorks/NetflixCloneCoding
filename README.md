@@ -13,8 +13,9 @@ This application uses TMDB and the TMDB APIs but is not endorsed, certified, or 
    ```  
 
 2. Get your [API Key](https://www.themoviedb.org/settings/api) and insert it in Resources/Secrets.xcconfig
-  <br> Create `Secrets.xcconfig` file in Resources folder
+  <br> ( Create `Secrets.xcconfig` file in Resources folder If needed )
    ```swift
    API_KEY = {Insert your API Key}
    ```  
-   
+   ![image](https://github.com/user-attachments/assets/7df63af1-9f9b-417f-b291-433ac7e224ce)
+
