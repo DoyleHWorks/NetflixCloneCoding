@@ -2,6 +2,10 @@
 
 This application uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.
 
+## 🖼️ Preview
+|![Simulator Screen Recording - iPhone 16 Pro - 2024-12-26 at 10 53 54](https://github.com/user-attachments/assets/d0055aa4-d869-41de-949b-af8fde603c4b)|
+|---|
+
 ## 📦 How to Install  
 1. Clone this repository:  
    ```bash  
